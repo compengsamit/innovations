@@ -1,0 +1,53 @@
+How mv file_name * works?
+
+Generally, mv command moves the files/directories from SOURCE to DESTINATION. The last argument in mv always considered as DESTINATION.
+
+So, if we use the below command to move one or more files to a directory, it will move those files from the current location to the provided destination.
+
+$ mv file1.txt file2.txt dir1
+
+( file1.txt and file2.txt will be moved to dir1 )
+
+$ mv acp.txt *
+
+Here, the case is little different because in the place of DESTINATION, we have given *(a wildcard character).
+
+In linux, *generally denotes "all" and if we use it in the shell under a directory, it expands to all the files and directories under that folder. See below:
+
+$ echo *
+acp.jax acp.txt test1 test2 test4 virt2 virt21
+$ 
+
+(Here, acp.jax, acp.txt, virt2 are files and others are directories.)
+
+So, now if I try to run $ mv acp.txt *, the * is getting expanded with the list of all files/directories under the current PWD. Please see below, how a wildcard get expanded here.
+
+$ echo mv acp.txt *
+mv acp.txt acp.jax acp.txt test1 test2 test4 virt2 virt21
+$ 
+
+Here, we can clearly see the complete command has become like mv acp.txt acp.jax acp.txt test1 test2 test4 virt2 virt21. It means, the directory 'virt21' has become the DESTINATION. Everything should get moved to directory 'virt21'.
+
+$ mv acp.txt *
+mv: cannot stat 'acp.txt': No such file or directory
+$ ls
+virt21
+$ ls virt21/
+acp.jax  acp.txt  test1  test2  test4  virt2
+$  
+
+( In my case, the * is getting expanded in alphabetical. It's output is generally same as ls.)
+
+In case, after the expansion of * the last argument is a file, then the mv command should fail simply without moving any files because for moving multiple files, the destination must be a directory. Check the below command
+
+$ echo mv acp.txt * 
+mv acp.txt acp.jax acp.txt test1 test2 test4 virt2 virt21 zebra.txt
+$ mv acp.txt * 
+mv: target 'zebra.txt' is not a directory
+$ ls
+acp.jax  acp.txt  test1  test2  test4  virt2  virt21  zebra.txt
+$
+
+Hope, the explantion here will be helpful.
+
+Feel free to post comments if you find any mistakes or the other possibilities with mv
